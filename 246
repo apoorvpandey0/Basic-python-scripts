@@ -1,0 +1,49 @@
+from math import sqrt,atan,pi
+class point:
+    def __init__(self,x=0,y=0) :
+        self.x=x
+        self.y=y
+    def data(self) :
+        """Reutrns the coordinates"""
+        return (self.x,self.y)
+class line:
+    def __init__(self,P1,P2):
+        self.P1=P1
+        self.P2=P2
+    def data(self) :
+        """Returns the coordinates"""
+        return (self.P1.data(),self.P2.data())
+    def slope(self) :
+        """Reutuns the slope of the line"""
+        if self.P1.y == self.P2.y :
+            return 0
+        elif self.P1.x==self.P2.y or self.P1.y==self.P2.x :
+            return None
+        else :
+            return (self.P2.y-self.P1.y)/(self.P2.x-self.P1.x)
+
+def distance(P1,P2) :
+    """Reutrns the distance between two point objects"""
+    return sqrt((P2.x-P1.x)*(P2.x-P1.x)+(P2.y-P1.y)*(P2.y-P1.y))
+
+def angle(L1,L2) :
+    """Returns the angle between two line objects"""
+    if L1.slope()==None or L2.slope()==None :
+        return "Angle cannot be determined, since line parallel to Y axis"
+    else:
+        return atan((L1.slope()-L2.slope())/(1+L1.slope()*L2.slope()))
+
+origin=point(0,0)
+py=point(0,6)
+px=point(5,0)
+a=point(5,5)
+b=point(4,-8)
+l1=line(origin,py)
+l2=line(origin,px)
+print(angle(l1,l2))
+print(pi/4)
+#print(distance(a,b))
+#print(l1.data())
+#print(a.data())
+print(l1.slope())
+print(l2.slope())
