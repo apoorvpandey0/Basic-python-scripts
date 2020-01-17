@@ -1,49 +1,46 @@
 from math import sqrt,atan,pi
-class point:
-    def __init__(self,x=0,y=0) :
-        self.x=x
-        self.y=y
-    def data(self) :
-        """Reutrns the coordinates"""
-        return (self.x,self.y)
-class line:
-    def __init__(self,P1,P2):
-        self.P1=P1
-        self.P2=P2
-    def data(self) :
-        """Returns the coordinates"""
-        return (self.P1.data(),self.P2.data())
-    def slope(self) :
-        """Reutuns the slope of the line"""
-        if self.P1.y == self.P2.y :
-            return 0
-        elif self.P1.x==self.P2.y or self.P1.y==self.P2.x :
-            return None
-        else :
-            return (self.P2.y-self.P1.y)/(self.P2.x-self.P1.x)
-
-def distance(P1,P2) :
-    """Reutrns the distance between two point objects"""
-    return sqrt((P2.x-P1.x)*(P2.x-P1.x)+(P2.y-P1.y)*(P2.y-P1.y))
-
-def angle(L1,L2) :
-    """Returns the angle between two line objects"""
-    if L1.slope()==None or L2.slope()==None :
-        return "Angle cannot be determined, since line parallel to Y axis"
+a,b=14500,5567               #4,2
+vlx,vrx=-4500,10500      #Since we know the x axis vertices
+h,k=int(abs(vrx+vlx)/2),1500
+f1,f2=-2000,8000         #Only x component bcz horizontal ellipse and hardcode the y component
+fortyfive=pi/4
+m,c=0,1
+phi=c-k
+mu=c+m*h
+def coc():
+    """Chord of contact ke m and c return karega"""
+    return 0
+def poc(m,c):
+    x1=((b*b*h-a*a*m*phi)+(a*b)*(sqrt(b*b+a*a*m*m-2*m*phi*h-phi*phi-m*m*h*h)))/(b*b+a*a*m*m)
+    x2=((b*b*h-a*a*m*phi)-(a*b)*(sqrt(b*b+a*a*m*m-2*m*phi*h-phi*phi-m*m*h*h)))/(b*b+a*a*m*m)
+    y1=((b*b*mu+a*a*m*m*k)+(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
+    y2=((b*b*mu+a*a*m*m*k)-(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
+    return x1,y1,x2,y2
+def slope(x1,y1,x2,y2):
+    if x2-x1==0:
+        return None
     else:
-        return atan((L1.slope()-L2.slope())/(1+L1.slope()*L2.slope()))
-
-origin=point(0,0)
-py=point(0,6)
-px=point(5,0)
-a=point(5,5)
-b=point(4,-8)
-l1=line(origin,py)
-l2=line(origin,px)
-print(angle(l1,l2))
-print(pi/4)
-#print(distance(a,b))
-#print(l1.data())
-#print(a.data())
-print(l1.slope())
-print(l2.slope())
+        return (y2-y1)/(x2-x1)
+def angle(x1,y1,p,q,x2,y2):
+    m1=slope(p,q,x1,y1)
+    m2=slope(x2,y2,p,q)
+    #print(m1,m2)
+    if 1+m1*m2==0 :     #When lines are perpendicular m1*m2=-1
+        return pi/2
+    elif m1==m2:        #When both the lines are same or have the same slopes
+        return pi
+    else:
+        return atan((m2-m1)/(1+m1*m2))
+def distance(x1,y1,x2,y2):
+    return sqrt((x1-x2)**2 + (y1-y2)**2)
+def isout2(x,y):
+    if distance(x,y,f1,1500) + distance(x,y,f2,1500) >15000:
+        return True
+    else:
+        return False
+def rtd(n):
+    return (180/pi)*n
+p,q=10501,1500
+a,b,c,d=poc(m,c)
+print(isout2(p,q))
+print(rtd(angle(a,b,p,q,c,d)))
