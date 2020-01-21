@@ -1,5 +1,6 @@
 #libraries
-
+#import matplotlib.pyplot as plt
+import numpy as np
 from math import sqrt,atan,pi
 
 #Not so important stuff
@@ -37,8 +38,6 @@ def poc(m,c):
     y1=((b*b*mu+a*a*m*m*k)+(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
     y2=((b*b*mu+a*a*m*m*k)-(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
     return x1,y1,x2,y2
-m,c=coc(0,b+1)
-print(poc(m,c))
 def distance(x1,y1,x2,y2):
     """Returns the distance between two points using the coordinates of those points"""
     return sqrt((x1-x2)**2 + (y1-y2)**2)
@@ -59,6 +58,9 @@ def slope(x1,y1,x2,y2):
         return None
     else:
         return (y2-y1)/(x2-x1)
+
+#Danger zone below
+
 def angle(x1,y1,p,q,x2,y2):
     """Returns the angle between the lines formed by 3 points:
             P(p,q)
@@ -68,15 +70,62 @@ def angle(x1,y1,p,q,x2,y2):
           /       \
          A(x1,y1) B(x2,y2)
     """
-    m1=slope(p,q,x1,y1)
-    m2=slope(x2,y2,p,q)
+    m1=slope(x1,y1,p,q)
+    m2=slope(p,q,x2,y2)
     #print(m1,m2)
     if 1+m1*m2==0 :     #When lines are perpendicular m1*m2=-1
         return pi/2
     elif m1==m2:        #When both the lines are same or have the same slopes
-        return pi
+        return 0
     else:
-        return atan((m2-m1)/(1+m1*m2))
+        return pi-abs(atan((m2-m1)/(1+m1*m2)))
+def angle2(x1,y1,p,q,x2,y2):
+    """Returns the angle between the lines formed by 3 points:
+            P(p,q)
+             / \
+            /   \
+           /Angle\
+          /       \
+         A(x1,y1) B(x2,y2)
+    """
+    m1=slope(x1,y1,p,q)
+    m2=slope(p,q,x2,y2)
+    #print(m1,m2)
+    if 1+m1*m2==0 :     #When lines are perpendicular m1*m2=-1
+        return pi/2
+    elif m1==m2:        #When both the lines are same or have the same slopes
+        return 0
+    else:
+        return abs(atan((m2-m1)/(1+m1*m2)))
+angles=[]
+angles2=[]
+L=int(b)+1
+R=L+10000
+for i in range(L,R):
+    m,c=coc(0,i)
+    #print(poc(m,c))
+    q,w,t,y=poc(m,c)       #(q,w) and (t,y) are the points of contact of the coc
+    e,r=0,i                # (e,r) is the 'P' point of our angle function
+    angles.append(rtd(angle(q,w,e,r,t,y)))
+    if rtd(angle(q,w,e,r,t,y)) > angles[-1] :
+        for j in range(i,R):
+                m,c=coc(0,j)
+                q,w,t,y=poc(m,c)
+                e,r=0,j
+                angles.append(rtd(angle2(q,w,e,r,t,y)))
+        break
+print(min(angles))
+plt.figure(1)
+#plt.subplot(211)
+plt.grid()
+plt.plot([i for i in range(L,R)],angles)
+# plt.subplot(212)
+# plt.grid()
+# plt.plot([i for i in range(int(b)+1,int(b)+1+R)],angles2)
+plt.show()
+#plt.plot([i for i in range(int(b)+1,int(b)+1+100)])
+#plt.show()
+
 #Debug: print(isout2(0,b+1))
 """
 #old code here
