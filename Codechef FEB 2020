@@ -1,0 +1,10 @@
+Long challenge
+Problem 2
+T=int(input())
+for case in range(T):
+    temp=list(map(lambda x:int(x),input().rstrip().split()))
+    N,K=temp[0],temp[1]
+    a=list(map(lambda x:int(x),input().rstrip().split()))
+    print(N,K,a)
+    
+        
