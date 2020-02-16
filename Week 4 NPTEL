@@ -1,0 +1,34 @@
+def remdup(a):
+	b=[]
+	for i in a :
+		if i not in b:
+			b.append(i)
+		else :
+			continue
+	return b
+import functools as ft
+def sumsquare(l):
+	even=odd=0
+	for ele in l:
+		if ele%2==0 :
+			even+=ele**2
+		else:
+			odd+=ele**2
+	return [odd,even]
+def transpose(m):
+	r=len(m)
+	if m!=[]:
+		c=len(m[0])
+	else:
+		c=0
+	transposed=[]
+	temp=[]
+	for column in range(c):
+		temp=[]
+		for row in range(r):
+			temp.append(m[row][column])
+		transposed.append(temp)
+	return transposed
+print(remdup([3,1,3,5]))
+print(sumsquare([1,3,5]))
+print(transpose([[1, 2, 3, 4], [5, 6, 7, 8]]))
