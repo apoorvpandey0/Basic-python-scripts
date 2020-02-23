@@ -1,7 +1,8 @@
 #libraries
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
-from math import sqrt,atan,pi
+from math import sqrt,atan,acos,pi
+from vectors import Vector,Point
 
 #Not so important stuff
 
@@ -87,77 +88,47 @@ def angle2(x1,y1,p,q,x2,y2):
            /Angle\
           /       \
          A(x1,y1) B(x2,y2)
+       Using the formula of DOT PRODUCT : angle=acos(a.b/|a||b|)
+       Where vector a=a1+a2 is PA=x1-p,y1-q
+       Where vector b=b1+b2 is PB=x2-p,y2-q
     """
-    m1=slope(x1,y1,p,q)
-    m2=slope(p,q,x2,y2)
-    #print(m1,m2)
-    if 1+m1*m2==0 :     #When lines are perpendicular m1*m2=-1
-        return pi/2
-    elif m1==m2:        #When both the lines are same or have the same slopes
-        return 0
-    else:
-        return abs(atan((m2-m1)/(1+m1*m2)))
-angles=[]
-angles2=[]
+    a1,a2=x1-p,y1-q
+    b1,b2=x2-p,y2-q
+    dot=a1*b1+a2*b2
+    moda=sqrt(a1*a1+a2*a2)
+    modb=sqrt(b1*b1+b2*b2)
+    print(a1,a2)
+    print(b1,b2)
+    print(dot)
+    print(moda,modb)
+    print(((x1-p)*(x2-p)+(y1-q)*(y2-q))/(sqrt(a1*a1+a2*a2))*(sqrt(b1*b1+b2*b2)))
+    return rtd(acos(((x1-p)*(x2-p)+(y1-q)*(y2-q))/(sqrt(a1*a1+a2*a2))*(sqrt(b1*b1+b2*b2))))
+#print(angle2(0,5,0,0,5,1))
+
 L=int(b)+1
-R=L+10000
-for i in range(L,R):
-    m,c=coc(0,i)
-    #print(poc(m,c))
-    q,w,t,y=poc(m,c)       #(q,w) and (t,y) are the points of contact of the coc
-    e,r=0,i                # (e,r) is the 'P' point of our angle function
-    angles.append(rtd(angle(q,w,e,r,t,y)))
-    if rtd(angle(q,w,e,r,t,y)) > angles[-1] :
-        for j in range(i,R):
-                m,c=coc(0,j)
-                q,w,t,y=poc(m,c)
-                e,r=0,j
-                angles.append(rtd(angle2(q,w,e,r,t,y)))
-        break
-print(min(angles))
-plt.figure(1)
-#plt.subplot(211)
-plt.grid()
-plt.plot([i for i in range(L,R)],angles)
-# plt.subplot(212)
-# plt.grid()
-# plt.plot([i for i in range(int(b)+1,int(b)+1+R)],angles2)
-plt.show()
-#plt.plot([i for i in range(int(b)+1,int(b)+1+100)])
-#plt.show()
+R=int(3e4)
 
-#Debug: print(isout2(0,b+1))
+for j in range(3000):
+    answer=0
+    for i in range(L,R):
+        m,c=coc(j,i)
+        q,w,t,y=poc(m,c)
+        p1=Point(q,w,0)
+        p2=Point(t,y,0)
+        p3=Point(j,i,0)
+        v1=Vector.from_points(p1,p3)
+        v2=Vector.from_points(p2,p3)
+        if v1.angle(v2) >= 45.0 :
+            answer+=1
+            #print(v1.angle(v2))
+    print(answer)
 """
-#old code here
-vlx,vrx=f1[0],f2[0] 	                        #Since we know the x axis vertices
-h,k=int(abs(vrx+vlx)/2),1500
-f1,f2=-2000,8000                                #Only x component bcz horizontal ellipse and hardcode the y component
-fortyfive=pi/4
-m,c=0,1
-phi=c-k
-mu=c+m*h
-def coc():
-    #Will return m and c of chord of contact
-    return 0
-def poc(m,c):
-    x1=((b*b*h-a*a*m*phi)+(a*b)*(sqrt(b*b+a*a*m*m-2*m*phi*h-phi*phi-m*m*h*h)))/(b*b+a*a*m*m)
-    x2=((b*b*h-a*a*m*phi)-(a*b)*(sqrt(b*b+a*a*m*m-2*m*phi*h-phi*phi-m*m*h*h)))/(b*b+a*a*m*m)
-    y1=((b*b*mu+a*a*m*m*k)+(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
-    y2=((b*b*mu+a*a*m*m*k)-(a*b*m)*(sqrt(b*b+a*a*m*m+2*mu*k-k*k-mu*mu)))/(b*b+a*a*m*m)
-    return x1,y1,x2,y2
-
-
-def distance(x1,y1,x2,y2):
-    return sqrt((x1-x2)**2 + (y1-y2)**2)
-def isout2(x,y):
-    if distance(x,y,f1,1500) + distance(x,y,f2,1500) >15000:
-        return True
-    else:
-        return False
-def rtd(n):
-    return (180/pi)*n
-p,q=10501,1500
-a,b,c,d=poc(m,c)
-# print(isout2(p,q))
-# print(rtd(angle(a,b,p,q,c,d)))
+This works!!
+p1=Point(-500,0,0)
+p2=Point(500,0,0)
+for i in range(10000):
+    p3=Point(0,i,0)
+    v1=Vector.from_points(p1,p3)
+    v2=Vector.from_points(p2,p3)
+    print(v1.angle(v2))
 """
