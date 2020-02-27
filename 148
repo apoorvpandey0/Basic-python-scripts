@@ -1,0 +1,26 @@
+#Problem 148 Project Euler
+def factorial(n):
+    if n==0 :
+        return 1
+    else :
+        return n*factorial(n-1)
+def comb(n,r):
+    return int(factorial(n)/(factorial(r)*factorial(n-r)))
+#print(factorial(5),comb(6,2))
+def prow(n):
+    lst=[]
+    for r in range(n+1):
+        lst.append(comb(n,r))
+    return lst
+def prow2(n):
+    lst=[]
+    for r in range(n+1):
+        if comb(n,r)%7==0:
+            lst.append(1)
+        else:
+            lst.append(0)
+        #lst.append(comb(n,r))
+    return lst
+#print(prow(7),prow2(7))
+for i in range(50):
+    print(prow2(i))
