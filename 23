@@ -1,0 +1,46 @@
+Question 23
+def pfactors(n) :
+    """Returns a list of prime factors of the given number"""
+    c=[]
+    flag=True
+    i=3
+    if n==1 :
+        c.append(None)
+        flag=False
+    if n==0 :
+        c.append(None)
+        flag=False
+    if n<0 :
+        c.append(None)
+        flag=False
+    if flag==True  :
+        while flag :
+            if n%2==0 :
+                n=n/2
+                c.append(2)
+            else :
+                flag=False
+        while n!=1 :
+           if n%i==0 :
+               n=n/i
+               c.append(i)
+           else :
+               i+=1
+    return c
+
+def powers(lst):
+    """Returns a list of count of all the powers in the given list"""
+    pow=[]
+    lset=set(lst)
+    for i in lset :
+        pow.append(lst.count(i))
+    return pow
+
+def pdiv(powers) :
+    """Returns an integer containing proper divisors of the given powers list"""
+    div=1
+    for i in powers :
+        div*=(i+1)
+    return div-2
+
+print(pdiv(powers(pfactors(169))))
