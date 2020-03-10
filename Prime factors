@@ -1,5 +1,3 @@
-#To find prime factors of a number
-
 def pfactors(n) :
     c=[]
     flag=True
@@ -13,7 +11,7 @@ def pfactors(n) :
     if n<0 :
         c.append(None)
         flag=False
-    if flag==True  :  
+    if flag==True  :
         while flag :
             if n%2==0 :
                 n=n/2
@@ -24,8 +22,8 @@ def pfactors(n) :
            if n%i==0 :
                n=n/i
                c.append(i)
-           i+=2
+           else :
+               i+=1
     print(c)
 
-pfactors(0)
-
+pfactors(169)
