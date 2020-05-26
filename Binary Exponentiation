@@ -1,0 +1,28 @@
+def power(x,n):
+  res=1
+  while n>0:
+    res*=x
+    n-=1
+  return res
+
+def power2(x,n):
+  if n == 0 :
+    return 1
+  res = power2(x,n//2)
+  #if odd...
+  if n & 1 :
+    return x*res*res
+  return res*res
+
+def power3(x,n):
+  res=1
+  while n>0 :
+    if n & 1 :
+      res*=x
+    x*=x
+    n>>=1
+  return res
+ 
+print(power(2,5))
+print(power2(2,5))
+print(power3(2,5))
